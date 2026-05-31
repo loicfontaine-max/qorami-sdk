@@ -1,0 +1,13 @@
+{
+  "name": "qorami",
+  "version": "0.1.0",
+  "description": "Qorami client — a control point between your AI agents and sending email (send / request_human_confirmation / do_not_send).",
+  "type": "module",
+  "main": "qorami.mjs",
+  "exports": { ".": "./qorami.mjs" },
+  "files": ["qorami.mjs", "README.md"],
+  "engines": { "node": ">=18" },
+  "keywords": ["ai", "agents", "email", "guardrails", "human-in-the-loop", "qorami"],
+  "homepage": "https://qorami.fr/docs",
+  "license": "MIT"
+}

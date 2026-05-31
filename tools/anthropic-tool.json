@@ -1,0 +1,18 @@
+{
+  "name": "qorami_check_email",
+  "description": "Before sending ANY email, call this to get permission from Qorami. It returns a decision the agent MUST obey: send (allowed), request_human_confirmation (a human must approve first), or do_not_send (blocked). When not allowed, `suggestions` explains what to fix.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "recipient": { "type": "string", "description": "Recipient email address." },
+      "subject": { "type": "string", "description": "Email subject." },
+      "body": { "type": "string", "description": "Full email body." },
+      "policyProfile": {
+        "type": "string",
+        "enum": ["general", "sales", "support", "legal-finance"],
+        "description": "Risk profile to apply. Default: general."
+      }
+    },
+    "required": ["recipient", "subject", "body"]
+  }
+}
