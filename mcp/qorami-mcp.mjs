@@ -5,7 +5,7 @@
 //
 // Setup:
 //   npm i @modelcontextprotocol/sdk zod
-//   QORAMI_API_KEY=qrm_ws_... node mcp/qorami-mcp.mjs
+//   QORAMI_API_KEY=qrm_ws_... node sdk/mcp/qorami-mcp.mjs
 //
 // Then register it in your MCP client (see ./README.md).
 
@@ -45,7 +45,10 @@ server.tool(
     const out = {
       decision: d.verification?.decision,
       nextAction: d.nextAction,
+      reasonCodes: d.verification?.reasonCodes || [],
       suggestions: d.verification?.suggestions || [],
+      // When present and safeToSend is true, send remediation.safeBody instead.
+      remediation: d.verification?.remediation || null,
       actionId: d.action?.id || null,
       creditsRemaining: d.billing?.creditsRemaining,
     }

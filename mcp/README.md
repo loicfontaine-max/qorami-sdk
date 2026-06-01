@@ -10,11 +10,12 @@ before sending. Tools:
 ## Run
 
 ```bash
-npm i @modelcontextprotocol/sdk zod
+npm install            # installs the pinned deps from package.json
 QORAMI_API_KEY=qrm_ws_... node qorami-mcp.mjs
 ```
 
-Get an API key in the [dashboard](https://qorami.fr/dashboard/).
+Tested against `@modelcontextprotocol/sdk` 1.29.x (Node 18+). Get an API key in the
+[dashboard](https://qorami.fr/dashboard/).
 
 ## Register in Claude Desktop
 
@@ -25,7 +26,7 @@ Add to `claude_desktop_config.json` (Settings → Developer → Edit Config):
   "mcpServers": {
     "qorami": {
       "command": "node",
-      "args": ["/absolute/path/to/qorami-sdk/mcp/qorami-mcp.mjs"],
+      "args": ["/absolute/path/to/sdk/mcp/qorami-mcp.mjs"],
       "env": { "QORAMI_API_KEY": "qrm_ws_..." }
     }
   }

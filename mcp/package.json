@@ -1,0 +1,19 @@
+{
+  "name": "qorami-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Qorami — check an email before an AI agent sends it (send / request_human_confirmation / do_not_send).",
+  "type": "module",
+  "bin": {
+    "qorami-mcp": "./qorami-mcp.mjs"
+  },
+  "main": "./qorami-mcp.mjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.23.8 || ^4.0.0"
+  },
+  "keywords": ["mcp", "model-context-protocol", "qorami", "ai-agents", "email", "guardrail"],
+  "license": "MIT"
+}
