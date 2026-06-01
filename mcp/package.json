@@ -5,9 +5,9 @@
   "mcpName": "io.github.loicfontaine-max/qorami",
   "type": "module",
   "bin": {
-    "qorami-mcp": "./qorami-mcp.mjs"
+    "qorami-mcp": "qorami-mcp.mjs"
   },
-  "main": "./qorami-mcp.mjs",
+  "main": "qorami-mcp.mjs",
   "files": ["qorami-mcp.mjs", "README.md"],
   "repository": {
     "type": "git",
