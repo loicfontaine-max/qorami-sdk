@@ -14,8 +14,16 @@ npm install            # installs the pinned deps from package.json
 QORAMI_API_KEY=qrm_ws_... node qorami-mcp.mjs
 ```
 
-Tested against `@modelcontextprotocol/sdk` 1.29.x (Node 18+). Get an API key in the
-[dashboard](https://qorami.fr/dashboard/).
+Or with Docker:
+
+```bash
+docker build -t qorami-mcp .
+docker run -i -e QORAMI_API_KEY=qrm_ws_... qorami-mcp
+```
+
+The server starts even without a key so clients can list the tools; a key is only
+needed to actually call them. Tested against `@modelcontextprotocol/sdk` 1.29.x
+(Node 18+). Get an API key in the [dashboard](https://qorami.fr/dashboard/).
 
 ## Register in Claude Desktop
 

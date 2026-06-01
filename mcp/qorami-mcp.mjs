@@ -15,9 +15,14 @@ import { z } from 'zod'
 
 const BASE_URL = process.env.QORAMI_BASE_URL || 'https://qorami.fr'
 const API_KEY = process.env.QORAMI_API_KEY
+// The server starts even without a key so MCP clients (and registries) can
+// introspect the tools. A key is only required to actually call a tool.
 if (!API_KEY) {
-  console.error('QORAMI_API_KEY is required. Get one at https://qorami.fr/dashboard/')
-  process.exit(1)
+  console.error('Note: QORAMI_API_KEY is not set — tools are listed but calls will fail until you set it. Get one at https://qorami.fr/dashboard/')
+}
+
+function needKey() {
+  return { content: [{ type: 'text', text: 'QORAMI_API_KEY is not set. Get a key at https://qorami.fr/dashboard/ and set it in the server environment.' }], isError: true }
 }
 
 async function api(method, path, body) {
@@ -41,6 +46,7 @@ server.tool(
     policyProfile: z.enum(['general', 'sales', 'support', 'legal-finance']).optional().describe('Risk profile (default general)'),
   },
   async (args) => {
+    if (!API_KEY) return needKey()
     const d = await api('POST', '/api/verify-email', args)
     const out = {
       decision: d.verification?.decision,
@@ -61,6 +67,7 @@ server.tool(
   'After request_human_confirmation, poll this with the actionId until nextAction.type becomes "send" (approved) or "do_not_send" (blocked).',
   { actionId: z.string().describe('The action id returned by verify_email') },
   async ({ actionId }) => {
+    if (!API_KEY) return needKey()
     const d = await api('GET', `/api/email-actions/${encodeURIComponent(actionId)}`)
     return { content: [{ type: 'text', text: JSON.stringify({ status: d.action?.status, nextAction: d.nextAction }, null, 2) }] }
   },
