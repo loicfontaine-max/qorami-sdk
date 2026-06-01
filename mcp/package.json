@@ -2,11 +2,18 @@
   "name": "qorami-mcp",
   "version": "1.0.0",
   "description": "MCP server for Qorami — check an email before an AI agent sends it (send / request_human_confirmation / do_not_send).",
+  "mcpName": "io.github.loicfontaine-max/qorami",
   "type": "module",
   "bin": {
     "qorami-mcp": "./qorami-mcp.mjs"
   },
   "main": "./qorami-mcp.mjs",
+  "files": ["qorami-mcp.mjs", "README.md"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loicfontaine-max/qorami-sdk.git"
+  },
+  "homepage": "https://qorami.fr",
   "engines": {
     "node": ">=18"
   },
