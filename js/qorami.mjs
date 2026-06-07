@@ -52,7 +52,11 @@ export class QoramiClient {
     return data
   }
 
-  // Verify an email before sending. Returns { decision, nextAction, action, billing, raw }.
+  // Verify an email before sending.
+  // Returns { decision, nextAction, action, billing, remediation, raw }.
+  // `remediation` (when present) carries a cleaned, sendable version of the email
+  // when it was risky only because of removable content — `remediation.safeBody`
+  // with `remediation.safeToSend === true` is safe to send as-is.
   async verify({ recipient, subject, body, policyProfile = 'general', agentId, idempotencyKey } = {}) {
     const data = await this._request('POST', '/api/verify-email', {
       recipient, subject, body, policyProfile, agentId, idempotencyKey,
@@ -62,6 +66,7 @@ export class QoramiClient {
       nextAction: data.nextAction,
       action: data.action,
       billing: data.billing,
+      remediation: data.verification?.remediation || null,
       raw: data,
     }
   }

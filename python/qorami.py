@@ -43,6 +43,10 @@ class VerifyResult:
     next_action: Dict[str, Any]
     action: Dict[str, Any]
     billing: Dict[str, Any] = field(default_factory=dict)
+    # A cleaned, sendable version when the email was risky only because of
+    # removable content. When present and remediation["safeToSend"] is True,
+    # remediation["safeBody"] is safe to send as-is.
+    remediation: Optional[Dict[str, Any]] = None
     raw: Dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -98,11 +102,13 @@ class QoramiClient:
         if idempotency_key:
             payload["idempotencyKey"] = idempotency_key
         data = self._request("POST", "/api/verify-email", payload)
+        verification = data.get("verification") or {}
         return VerifyResult(
-            decision=(data.get("verification") or {}).get("decision"),
+            decision=verification.get("decision"),
             next_action=data.get("nextAction") or {},
             action=data.get("action") or {},
             billing=data.get("billing") or {},
+            remediation=verification.get("remediation"),
             raw=data,
         )
 

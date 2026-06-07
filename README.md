@@ -72,6 +72,28 @@ Every client returns the same decision the agent must obey via `nextAction.type`
 `send`, `request_human_confirmation` (a human approves first — poll the action),
 or `do_not_send`. See <https://qorami.fr/docs>.
 
+## Cleaned version (auto-remediation)
+
+When an email is risky **only** because of mechanically-removable content (a leaked
+secret, a suspicious link, an IBAN/card/SSN), the verify result carries a cleaned,
+sendable copy — send `remediation.safeBody` instead of blocking outright:
+
+```js
+const r = await qorami.verify({ recipient, subject, body, policyProfile: 'general' })
+if (r.nextAction.type === 'do_not_send' && r.remediation?.safeToSend) {
+  mailer.send({ ...email, body: r.remediation.safeBody })   // safe, redacted copy
+}
+```
+
+```python
+r = qorami.verify(recipient=..., subject=..., body=email_body)
+if r.next_action_type == "do_not_send" and (r.remediation or {}).get("safeToSend"):
+    send_email(body=r.remediation["safeBody"])   # safe, redacted copy
+```
+
+`remediation.removed` lists what was stripped (e.g. `["secret", "link"]`). The MCP
+server surfaces the same field.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
