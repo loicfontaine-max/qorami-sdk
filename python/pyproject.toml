@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qorami"
+version = "1.0.0"
+description = "Qorami client — a control point between your AI agents and sending email (send / request_human_confirmation / do_not_send)."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Qorami.AI", email = "contact@qorami.fr" }]
+keywords = ["ai", "agents", "email", "guardrails", "human-in-the-loop", "qorami"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+]
+
+[project.urls]
+Homepage = "https://qorami.fr"
+Documentation = "https://qorami.fr/docs"
+Repository = "https://github.com/loicfontaine-max/qorami-sdk"
+
+[tool.setuptools]
+py-modules = ["qorami"]
