@@ -1,6 +1,6 @@
 {
   "name": "qorami",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Qorami client — a control point between your AI agents and sending email (send / request_human_confirmation / do_not_send).",
   "type": "module",
   "main": "qorami.mjs",
