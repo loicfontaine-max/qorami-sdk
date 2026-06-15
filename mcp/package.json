@@ -1,6 +1,6 @@
 {
   "name": "qorami-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for Qorami — check an email before an AI agent sends it (send / request_human_confirmation / do_not_send).",
   "mcpName": "io.github.loicfontaine-max/qorami",
   "type": "module",

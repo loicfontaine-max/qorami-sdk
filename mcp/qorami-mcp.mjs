@@ -25,16 +25,63 @@ function needKey() {
   return { content: [{ type: 'text', text: 'QORAMI_API_KEY is not set. Get a key at https://qorami.fr/dashboard/ and set it in the server environment.' }], isError: true }
 }
 
-async function api(method, path, body) {
+async function requestJson(method, path, body, { requireKey = true } = {}) {
+  const headers = { ...(body ? { 'content-type': 'application/json' } : {}) }
+  if (requireKey && API_KEY) headers['x-qorami-api-key'] = API_KEY
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
-    headers: { 'x-qorami-api-key': API_KEY, ...(body ? { 'content-type': 'application/json' } : {}) },
+    headers,
     ...(body ? { body: JSON.stringify(body) } : {}),
   })
-  return res.json().catch(() => ({}))
+  const data = await res.json().catch(() => ({}))
+  return { ok: res.ok, status: res.status, data }
 }
 
-const server = new McpServer({ name: 'qorami', version: '1.0.0' })
+async function api(method, path, body) {
+  return requestJson(method, path, body, { requireKey: true })
+}
+
+function jsonTool(payload, isError = false) {
+  return { content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }], isError }
+}
+
+const server = new McpServer({ name: 'qorami', version: '1.0.1' })
+
+server.tool(
+  'qorami_health',
+  'Check whether the Qorami MCP server is configured correctly. This never spends credits: it checks API reachability and, when a key is set, reads usage/balance.',
+  {},
+  async () => {
+    const health = await requestJson('GET', '/api/health', null, { requireKey: false }).catch((err) => ({
+      ok: false,
+      status: 0,
+      data: { error: err?.message || String(err) },
+    }))
+    let usage = null
+    if (API_KEY) {
+      const usageRes = await api('GET', '/api/usage').catch((err) => ({
+        ok: false,
+        status: 0,
+        data: { error: { message: err?.message || String(err) } },
+      }))
+      usage = {
+        ok: usageRes.ok,
+        status: usageRes.status,
+        workspaceId: usageRes.data?.workspaceId || usageRes.data?.workspace?.id || null,
+        creditsRemaining: usageRes.data?.billing?.creditsRemaining ?? usageRes.data?.creditsRemaining ?? null,
+        error: usageRes.ok ? null : usageRes.data?.error || usageRes.data,
+      }
+    }
+    return jsonTool({
+      ok: health.ok && (!API_KEY || usage?.ok === true),
+      baseUrl: BASE_URL,
+      apiKeyConfigured: Boolean(API_KEY),
+      apiHealth: { ok: health.ok, status: health.status, service: health.data?.service || null, storage: health.data?.storage ?? null },
+      usage,
+      nextStep: API_KEY ? 'Call verify_email before any agent sends email.' : 'Set QORAMI_API_KEY from https://qorami.fr/dashboard/ before calling verify_email.',
+    }, health.ok === false)
+  },
+)
 
 server.tool(
   'verify_email',
@@ -47,7 +94,9 @@ server.tool(
   },
   async (args) => {
     if (!API_KEY) return needKey()
-    const d = await api('POST', '/api/verify-email', args)
+    const res = await api('POST', '/api/verify-email', args)
+    const d = res.data
+    if (!res.ok) return jsonTool({ error: d.error || d, status: res.status }, true)
     const out = {
       decision: d.verification?.decision,
       nextAction: d.nextAction,
@@ -58,7 +107,7 @@ server.tool(
       actionId: d.action?.id || null,
       creditsRemaining: d.billing?.creditsRemaining,
     }
-    return { content: [{ type: 'text', text: JSON.stringify(out, null, 2) }] }
+    return jsonTool(out)
   },
 )
 
@@ -68,8 +117,10 @@ server.tool(
   { actionId: z.string().describe('The action id returned by verify_email') },
   async ({ actionId }) => {
     if (!API_KEY) return needKey()
-    const d = await api('GET', `/api/email-actions/${encodeURIComponent(actionId)}`)
-    return { content: [{ type: 'text', text: JSON.stringify({ status: d.action?.status, nextAction: d.nextAction }, null, 2) }] }
+    const res = await api('GET', `/api/email-actions/${encodeURIComponent(actionId)}`)
+    const d = res.data
+    if (!res.ok) return jsonTool({ error: d.error || d, status: res.status }, true)
+    return jsonTool({ status: d.action?.status, nextAction: d.nextAction })
   },
 )
 

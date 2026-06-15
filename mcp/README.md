@@ -4,10 +4,19 @@ Exposes Qorami as native [Model Context Protocol](https://modelcontextprotocol.i
 tools, so any MCP client (Claude Desktop, IDEs, agent frameworks) can check email
 before sending. Tools:
 
+- **`qorami_health`** — verify the server is wired up (API reachable, key valid, credits left). Never spends a credit; run it first.
 - **`verify_email`** — get the decision (send / request_human_confirmation / do_not_send) + suggestions.
 - **`check_action_status`** — poll a pending action until a human approves/blocks.
 
 ## Run
+
+Quickest — no clone, no install (published on npm):
+
+```bash
+QORAMI_API_KEY=qrm_ws_... npx qorami-mcp
+```
+
+Or from a local checkout:
 
 ```bash
 npm install            # installs the pinned deps from package.json
@@ -33,17 +42,22 @@ Add to `claude_desktop_config.json` (Settings → Developer → Edit Config):
 {
   "mcpServers": {
     "qorami": {
-      "command": "node",
-      "args": ["/absolute/path/to/sdk/mcp/qorami-mcp.mjs"],
+      "command": "npx",
+      "args": ["-y", "qorami-mcp"],
       "env": { "QORAMI_API_KEY": "qrm_ws_..." }
     }
   }
 }
 ```
 
-Restart Claude Desktop; the `verify_email` tool appears. Any MCP-compatible client
-(Cursor, Windsurf, custom agents) registers it the same way — point it at the
-script over stdio.
+Restart Claude Desktop; the Qorami tools appear. Any MCP-compatible client
+(Cursor, Windsurf, custom agents) registers it the same way — same `npx qorami-mcp`
+command over stdio.
+
+**First test:** ask the client to run `qorami_health`. It confirms the API is
+reachable and your key works **without spending a credit**, and returns your
+remaining balance. Then tell the agent to call `verify_email` before it sends any
+email. Full walkthrough: <https://qorami.fr/mcp>.
 
 ## The contract
 
