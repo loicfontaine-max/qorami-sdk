@@ -13,7 +13,7 @@ Full API reference: <https://qorami.fr/docs>.
 | [`js/`](js) | Zero-dependency JavaScript / TypeScript client (`fetch`, Node 18+ or browser). |
 | [`python/`](python) | Zero-dependency Python client (stdlib only) + a LangChain tool. |
 | [`tools/`](tools) | Drop-in OpenAI function-calling & Anthropic tool-use schemas for `qorami_check_email`. |
-| [`mcp/`](mcp) | Stdio MCP server (`verify_email` + `check_action_status`) for Claude Desktop, Cursor, any MCP client. |
+| [`mcp/`](mcp) | Stdio MCP server (`qorami_health`, `verify_email`, `check_action_status`) for Claude Desktop, Cursor, any MCP client. |
 | [`examples/`](examples) | Runnable Node & Python quickstarts. |
 
 ## JavaScript / TypeScript
@@ -64,7 +64,7 @@ tool = build_qorami_tool()        # reads QORAMI_API_KEY
 ## MCP server
 
 Register Qorami as a native tool in Claude Desktop / Cursor / any MCP client —
-see [`mcp/`](mcp). It exposes `verify_email` and `check_action_status` over stdio.
+see [`mcp/`](mcp). It exposes `qorami_health`, `verify_email` and `check_action_status` over stdio.
 
 ## The contract
 
