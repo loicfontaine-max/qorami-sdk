@@ -11,9 +11,10 @@ Full API reference: <https://qorami.fr/docs>.
 | Path | What |
 |---|---|
 | [`js/`](js) | Zero-dependency JavaScript / TypeScript client (`fetch`, Node 18+ or browser). |
-| [`python/`](python) | Zero-dependency Python client (stdlib only) + a LangChain tool. |
+| [`python/`](python) | Zero-dependency Python client (stdlib only) + LangChain, CrewAI, LlamaIndex & OpenAI-Agents tools. |
 | [`tools/`](tools) | Drop-in OpenAI function-calling & Anthropic tool-use schemas for `qorami_check_email`. |
 | [`mcp/`](mcp) | Stdio MCP server (`qorami_health`, `verify_email`, `check_action_status`) for Claude Desktop, Cursor, any MCP client. |
+| [`n8n/`](n8n) | No-code recipe: guard a workflow's email with an HTTP Request node. |
 | [`examples/`](examples) | Runnable Node & Python quickstarts. |
 
 ## JavaScript / TypeScript
@@ -51,15 +52,24 @@ elif result.next_action_type == "request_human_confirmation":
 # else: do_not_send
 ```
 
-### LangChain
+### Agent framework tools
 
-[`python/langchain_tool.py`](python/langchain_tool.py) exposes a
-`qorami_check_email` tool an agent can call before sending:
+Drop-in `qorami_check_email` wrappers — each returns `ALLOWED` / `NEEDS HUMAN
+APPROVAL` / `BLOCKED` and reuses `qorami.py`:
+
+| Framework | File | Install |
+|---|---|---|
+| LangChain | [`python/langchain_tool.py`](python/langchain_tool.py) | `pip install langchain-core pydantic` |
+| CrewAI | [`python/crewai_tool.py`](python/crewai_tool.py) | `pip install crewai pydantic` |
+| LlamaIndex | [`python/llamaindex_tool.py`](python/llamaindex_tool.py) | `pip install llama-index-core` |
+| OpenAI Agents SDK | [`python/openai_agents_tool.py`](python/openai_agents_tool.py) | `pip install openai-agents` |
 
 ```python
 from langchain_tool import build_qorami_tool
 tool = build_qorami_tool()        # reads QORAMI_API_KEY
 ```
+
+No-code workflows (n8n) use a plain HTTP Request node — see [`n8n/`](n8n).
 
 ## MCP server
 
