@@ -41,13 +41,15 @@ A `guard(...)` helper and `status(action_id)` (poll after
 
 ## Agent framework tools
 
-Drop-in `qorami_check_email` tools that wrap the client for popular frameworks
+Install the matching extra and import the drop-in `qorami_check_email` wrapper
 (each returns `ALLOWED` / `NEEDS HUMAN APPROVAL` / `BLOCKED`):
 
-- `langchain_tool.py` — `pip install langchain-core pydantic`
-- `crewai_tool.py` — `pip install crewai pydantic`
-- `llamaindex_tool.py` — `pip install llama-index-core`
-- `openai_agents_tool.py` — `pip install openai-agents`
+```bash
+pip install qorami[langchain]      # from qorami_langchain import build_qorami_tool
+pip install qorami[crewai]         # from qorami_crewai import QoramiEmailGuard
+pip install qorami[llamaindex]     # from qorami_llamaindex import build_qorami_tool
+pip install qorami[openai-agents]  # from qorami_openai_agents import qorami_check_email
+```
 
 For no-code workflows (n8n), use a plain HTTP Request node — see the repo's `n8n/`.
 

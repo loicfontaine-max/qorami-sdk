@@ -54,18 +54,18 @@ elif result.next_action_type == "request_human_confirmation":
 
 ### Agent framework tools
 
-Drop-in `qorami_check_email` wrappers — each returns `ALLOWED` / `NEEDS HUMAN
-APPROVAL` / `BLOCKED` and reuses `qorami.py`:
+`pip install qorami[<framework>]` ships a drop-in `qorami_check_email` wrapper —
+each returns `ALLOWED` / `NEEDS HUMAN APPROVAL` / `BLOCKED` and reuses the client:
 
-| Framework | File | Install |
+| Framework | Install | Import |
 |---|---|---|
-| LangChain | [`python/langchain_tool.py`](python/langchain_tool.py) | `pip install langchain-core pydantic` |
-| CrewAI | [`python/crewai_tool.py`](python/crewai_tool.py) | `pip install crewai pydantic` |
-| LlamaIndex | [`python/llamaindex_tool.py`](python/llamaindex_tool.py) | `pip install llama-index-core` |
-| OpenAI Agents SDK | [`python/openai_agents_tool.py`](python/openai_agents_tool.py) | `pip install openai-agents` |
+| LangChain | `pip install qorami[langchain]` | `from qorami_langchain import build_qorami_tool` |
+| CrewAI | `pip install qorami[crewai]` | `from qorami_crewai import QoramiEmailGuard` |
+| LlamaIndex | `pip install qorami[llamaindex]` | `from qorami_llamaindex import build_qorami_tool` |
+| OpenAI Agents SDK | `pip install qorami[openai-agents]` | `from qorami_openai_agents import qorami_check_email` |
 
 ```python
-from langchain_tool import build_qorami_tool
+from qorami_langchain import build_qorami_tool
 tool = build_qorami_tool()        # reads QORAMI_API_KEY
 ```
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qorami"
-version = "1.0.0"
+version = "1.1.0"
 description = "Qorami client — a control point between your AI agents and sending email (send / request_human_confirmation / do_not_send)."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -23,5 +23,14 @@ Homepage = "https://qorami.fr"
 Documentation = "https://qorami.fr/docs"
 Repository = "https://github.com/loicfontaine-max/qorami-sdk"
 
+# Optional agent-framework tool wrappers. The core client stays zero-dependency;
+# install only the extra you use, e.g. `pip install qorami[langchain]`.
+[project.optional-dependencies]
+langchain = ["langchain-core", "pydantic"]
+crewai = ["crewai", "pydantic"]
+llamaindex = ["llama-index-core"]
+openai-agents = ["openai-agents"]
+all = ["langchain-core", "crewai", "llama-index-core", "openai-agents", "pydantic"]
+
 [tool.setuptools]
-py-modules = ["qorami"]
+py-modules = ["qorami", "qorami_langchain", "qorami_crewai", "qorami_llamaindex", "qorami_openai_agents"]
