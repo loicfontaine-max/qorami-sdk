@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-qorami",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "n8n community node for Qorami — check an email before your workflow sends it (send / ask a human / block).",
   "keywords": [
     "n8n-community-node-package",
@@ -22,17 +22,39 @@
     "type": "git",
     "url": "https://github.com/loicfontaine-max/qorami-sdk.git"
   },
+  "engines": {
+    "node": ">=18.10"
+  },
   "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "lint": "eslint nodes credentials package.json",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "index.js"
+  ],
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "credentials/QoramiApi.credentials.js"
+      "dist/credentials/QoramiApi.credentials.js"
     ],
     "nodes": [
-      "nodes/Qorami/Qorami.node.js"
+      "dist/nodes/Qorami/Qorami.node.js"
     ]
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "gulp": "^5.0.0",
+    "jsonc-eslint-parser": "^2.4.0",
+    "n8n-workflow": "*",
+    "typescript": "^5.5.4"
   }
 }
