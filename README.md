@@ -14,7 +14,8 @@ Full API reference: <https://qorami.fr/docs>.
 | [`python/`](python) | Zero-dependency Python client (stdlib only) + LangChain, CrewAI, LlamaIndex & OpenAI-Agents tools. |
 | [`tools/`](tools) | Drop-in OpenAI function-calling & Anthropic tool-use schemas for `qorami_check_email`. |
 | [`mcp/`](mcp) | Stdio MCP server (`qorami_health`, `verify_email`, `check_action_status`) for Claude Desktop, Cursor, any MCP client. |
-| [`n8n/`](n8n) | No-code recipe: guard a workflow's email with an HTTP Request node. |
+| [`n8n-nodes-qorami/`](n8n-nodes-qorami) | **n8n community node** (`Settings → Community Nodes → n8n-nodes-qorami`) — guard an email, usable as an AI-Agent tool. |
+| [`n8n/`](n8n) | No-code recipe: guard a workflow's email with a plain HTTP Request node (no install). |
 | [`examples/`](examples) | Runnable Node & Python quickstarts. |
 
 ## JavaScript / TypeScript
