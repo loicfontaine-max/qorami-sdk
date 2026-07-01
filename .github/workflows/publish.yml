@@ -28,6 +28,9 @@ jobs:
           registry-url: https://registry.npmjs.org
       # OIDC trusted publishing needs npm >= 11.5
       - run: npm install -g npm@latest
-      - run: npm install
+      # --ignore-scripts: skip native compilation of transitive dev deps
+      # (isolated-vm fails to build on the Linux runner and isn't needed
+      # for tsc + gulp icons)
+      - run: npm install --ignore-scripts
       - run: npm run build
       - run: npm publish --provenance --access public
