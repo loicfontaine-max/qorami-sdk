@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-qorami",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "n8n community node for Qorami — check an email before your workflow sends it (send / ask a human / block).",
   "keywords": [
     "n8n-community-node-package",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/loicfontaine-max/qorami-sdk.git"
+    "url": "https://github.com/loicfontaine-max/n8n-nodes-qorami.git"
   },
   "engines": {
     "node": ">=18.10"
