@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-qorami",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "n8n community node for Qorami — check an email before your workflow sends it (send / ask a human / block).",
   "keywords": [
     "n8n-community-node-package",

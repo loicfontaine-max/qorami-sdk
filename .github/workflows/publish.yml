@@ -1,0 +1,33 @@
+name: publish-n8n-node
+
+# Publishes n8n-nodes-qorami to npm with a provenance statement, as required
+# by n8n for community-node verification (mandatory since May 1st 2026).
+# Auth uses npm Trusted Publishing (OIDC): npmjs.com > n8n-nodes-qorami >
+# Settings > Trusted Publishers must list this repo + workflow filename.
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "n8n-nodes-qorami-v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: n8n-nodes-qorami
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+      # OIDC trusted publishing needs npm >= 11.5
+      - run: npm install -g npm@latest
+      - run: npm install
+      - run: npm run build
+      - run: npm publish --provenance --access public
