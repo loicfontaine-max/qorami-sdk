@@ -23,7 +23,7 @@ export class QoramiApi implements ICredentialType {
 			typeOptions: { password: true },
 			default: '',
 			required: true,
-			description: 'Your Qorami workspace API key (dashboard → Démarrer)',
+			description: 'Your Qorami workspace API key. Get one free at https://qorami.fr/dashboard/',
 		},
 	];
 
